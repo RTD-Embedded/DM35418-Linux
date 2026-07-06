@@ -173,7 +173,7 @@ each ADC.
 Usage: Display the command syntax by executing: 
 
 ```sh
-./dm35418_adc_continuous --help.
+./dm35418_adc_continuous --help
 ```
 
 Hit CTRL-C to exit.
@@ -289,7 +289,7 @@ the DACs in use.
 Usage: Display the command syntax by executing:
 
 ```sh
-./dm35418_dac_syncbus --help.
+./dm35418_dac_syncbus --help
 ```
 
 You will have to designate one board to be master and the other boards
