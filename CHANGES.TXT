@@ -1,0 +1,109 @@
+Change log for SWP-700010151 rev I
+
+Linux Software (DM35418)
+
+Copyright (C) RTD Embedded Technologies, Inc.  All Rights Reserved.
+
+
+
+v01.00.00 (rev A)   4/23/2013  RGG
+-----------------------------------
+- Initial version
+
+
+v01.00.01 (rev B)   4/30/2013  RGG
+-----------------------------------
+- Added 64-bit support to the documentation.  The support already exists in the
+  driver, but was omitted from the docs for the first release.
+
+
+v02.00.00 (rev C)   10/10/2013  RGG         
+-----------------------------------
+- Added open function to temperature library
+- Minor change to how driver allocates memory for DMA.
+- ADC and DAC Interrupt Enable was not being returned correctly from the
+  library function call.
+- The convenience functions to convert counts to volts and volts to counts now
+  takes the set input/output range as a parameter instead of channel.  This removes
+  a hidden structure that kept that information.
+- Marker value added to DAC set conversion function, so that can be set
+  dynamically by the user as well.
+
+
+v03.00.00 (rev D)  11/21/2014  RGG
+------------------------------------
+- Driver is now dual-licensed.  The driver and all files required to use it
+  is GPLv2 licensed, and the user-mode libraries and examples use the
+  standard RTD license.
+- Driver now creates the device files directly, instead of having the user
+  do so via the /proc.  This is in response to the /proc interface changing
+  in kernel version 3.10.
+- DAC_Channel_Set_Output_Range changed to DAC_Channel_Setup for consistency.
+- Syncbus_Set_Output_Enable changed to Syncbus_Set_Direction, because that
+  is what it's doing.
+- "Board" library functions and references changed to "Gbc" because that
+  is where it actually is.
+
+
+v03.01.00 (rev E)  12/10/2015  RGG
+------------------------------------
+- Added two constants to the sync library .h file for choosing clock select
+- Added new example file, similar to adc_continuous_dma, that uses the syncbus
+  clock as a trigger to sample, then resets and does it again.
+- Explicitly calling pci_set_master in driver to allow DMA, as some
+  UEFI BIOS do not set this in PCI space.
+
+
+v04.00.00 (rev F)  03/20/2016  RGG 
+------------------------------------
+- Removed library function _Find_Used_Buffer because it had some inherent flaws
+  and in very remote cases could fail.  The user is now responsible to keep
+  track of what buffer is next.  All examples using DMA have been updated to
+  demonstrate how to do this.
+- Changed method in library for setting sample/conversion rate.  It now gets the 
+  system clock from another library call (which constrains it) instead of reading
+  it directly.  This solves a problem where consecutive calls to set the same
+  sample rate was resulting in different rates for different function blocks.
+- Adding adc_to_dac_dma example.  This example takes what is captured on an
+  ADC and then writes it to the corresponding DAC output buffer.
+- Adding adc_sync_trig_dma example.  This example uses a signal on the syncbus
+  to trigger when to take samples.
+- Removed library function for setting ISR priority.  Using it required being root,
+  and it's not actually needed anyway.
+
+
+v05.00.00 (rev G)   03/30/2017     RGG
+---------------------------------------
+- Added adc_thresh_dma example.  It demonstrates setting the ADC sampling start
+  trigger when the value crosses a threshold.
+- Added revision info from GBC registers to list_fb example output.
+- DMA Buffer setup library call changed.  It now takes a single unsigned
+  8-bit value for the register instead of booleans for every bit.
+- Dma Initialize and other functions moved out of DMA library and into 
+  os-specific library.
+- Added reference count to driver.  This prevents the device file from being
+  opened while already held open by another program.
+- All instances of CLK_SRC_GBL have been changed to CLK_BUS for clarity.
+- Removed setting rate in _dac example, as it is not needed.
+- First part of adc_sync_trig_dma example was not triggering correctly.
+- Simplified adc_thresh_dma example, as it is only meant to serve as an
+  example of triggering on threshold.
+- Simplified adc_sync_trig example, as it is only meant to serve as an 
+  example of triggering from the syncbus input.
+  
+
+v05.00.01 (rev H)  03/06/2020  LRF
+-----------------------------------
+- Allows for compiling on the 5.0 Linux Kernel without error.
+- Added an example program dm35418_basic_ints.c to exhibit use of
+non-DMA interrupts.
+- patched driver file to allow for dma_alloc_coherent(...) to return valid memory address post 4.19+.
+
+
+v06.00.00 (rev I)  03/22/2024  LRF
+-----------------------------------
+- Major Revision that changes how the PCI devices are registered with the kernel andprobed into the kernel.
+- NVIDIA Orin Products will require this version.
+- Patched check_result function name to not namespace collide with multiple libraries.
+- Added #define RESET_ON_CLOSE as a compile time flag by default. This can be removed to suppress the board reset behavior on when calling DM35418_Board_Close(...)
+- Patched dm35418_basic_ints.c so that it displays the values it reads for better clarity. 

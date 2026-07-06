@@ -1,0 +1,26 @@
+#   This file is provided to enable easy plotting of data captured from the
+#   ADC Syncbus DMA example program.  The data is plotted via gnuplot.
+#
+#                    http://www.gnuplot.info
+#
+#   After the example program has run, create the plot by executing
+#   "gnuplot plot_adc_sync_dma" from the command line.  
+#
+#   Note that large files can be difficult for gnuplot to render in
+#   a meaningful amount of time.
+#
+#
+#    --------------------------------------------------------------------------
+#    This file and its contents are copyright (C) RTD Embedded Technologies,
+#    Inc.  All Rights Reserved.
+#
+#    This software is licensed as described in the RTD End-User Software License
+#    Agreement.  For a copy of this agreement, refer to the file LICENSE.TXT
+#    (which should be included with this software) or contact RTD Embedded
+#    Technologies, Inc.
+#    --------------------------------------------------------------------------
+
+set autoscale
+plot "adc_sync_dma.txt" every 5:5 using 1:2 title 'ADC 0' 
+
+
