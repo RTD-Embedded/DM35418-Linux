@@ -32,7 +32,7 @@ license terms listed above.
 ## Supported Hardware
 
 
-This software supports the RTD [DM35418].
+This software supports the RTD DM35418.
 
 
 ## Supported Kernel Versions
