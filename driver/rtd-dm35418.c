@@ -4,7 +4,7 @@
     @brief
         DM35418 driver source code
 
-    $Id: rtd-dm35418.c 141723 2024-03-19 20:16:39Z lfrankenfield $
+    $Id: rtd-dm35418.c 154351 2026-05-14 12:16:17Z asutton $
 */
 
 //----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ Driver identification
  ===============================================================*/
 
 #define DRIVER_NAME "rtd-dm35418"
-#define DRIVER_VERSION "05.00.01"
+#define DRIVER_VERSION "05.00.02"
 #define DRIVER_DESCRIPTION "Device driver for the DM35418"
 #define DRIVER_COPYRIGHT "Copyright (C), RTD Embedded Technologies, Inc.  All Rights Reserved."
 
@@ -1309,6 +1309,11 @@ static long dm35418_ioctl(struct file *file,
 		result = 0;
 		break;
 	}
+	case DM35418_IOCTL_GET_DEVICE_ID:
+		result = copy_to_user((unsigned int *) ioctl_param,
+			 &dm35418_device->device_id, sizeof(unsigned int));
+		break;
+
 	default:
 
 		result = -ENOTTY;
@@ -2093,6 +2098,8 @@ dm35418_probe(struct pci_dev *pci_device, const struct pci_device_id *id)
 	dm35418_device->device_index = dev_idx;
 	// Assign PCI device to the descriptor
 	dm35418_device->pdev = pci_device;
+	// Assign PCI device id to the descriptor
+	dm35418_device->device_id = id->device;
 
 	/*
 	 * Create the full device name
@@ -2208,7 +2215,7 @@ dm35418_probe(struct pci_dev *pci_device, const struct pci_device_id *id)
 /****
 Remove
 */
-void dm35418_remove(struct pci_dev *pci_device)
+static void dm35418_remove(struct pci_dev *pci_device)
 {
 	struct dm35418_device_descriptor *dm35418_device;
 	int dev_idx, minor;
@@ -2369,7 +2376,7 @@ static int dm35418_release(struct inode *inode, struct file *file)
 /******************************************************************************
 Initialization upon driver module load
  ******************************************************************************/
-int dm35418_init(void)
+static int dm35418_init(void)
 {
 	dev_t device;
 	int status;
@@ -2408,10 +2415,10 @@ int dm35418_init(void)
 	    MAJOR(device), MINOR(device));
 
 	// Register the class
-#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0)
-	dev_class = class_create(THIS_MODULE, DRIVER_NAME);
-#else
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 4, 0)
 	dev_class = class_create(DRIVER_NAME);
+#else
+	dev_class = class_create(THIS_MODULE, DRIVER_NAME);
 #endif
 
 	// Check failure of class creation
@@ -2453,7 +2460,7 @@ int dm35418_init(void)
 /******************************************************************************
 Deinitialize DM35418 driver and devices
  ******************************************************************************/
-void dm35418_unload(void)
+static void dm35418_unload(void)
 {
 	/* Unregister the driver */
 	pci_unregister_driver(&dm35418_pci_driver);

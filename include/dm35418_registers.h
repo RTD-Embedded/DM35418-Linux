@@ -4,7 +4,7 @@
     @brief
         Defines for the DM35418 Registers (Offsets)
 
-    $Id: dm35418_registers.h 139902 2023-10-13 18:04:34Z lfrankenfield $
+    $Id: dm35418_registers.h 154807 2026-06-02 15:14:13Z asutton $
 */
 
 //----------------------------------------------------------------------------
@@ -493,6 +493,7 @@
  *      with a channel number.
  */
 #define DM35418_OFFSET_FB_ADC_FIFO              0x0334
+
 
 
 

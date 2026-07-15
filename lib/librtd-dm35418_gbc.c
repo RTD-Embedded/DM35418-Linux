@@ -5,7 +5,7 @@
 		DM35418 Board library source code
 
 
-	$Id: librtd-dm35418_gbc.c 104760 2016-11-28 20:17:52Z rgroner $
+	$Id: librtd-dm35418_gbc.c 153456 2026-04-01 16:00:08Z bkorpacz $
 */
 
 //----------------------------------------------------------------------------
@@ -36,8 +36,9 @@
 #include "dm35418_dma_library.h"
 #include "dm35418_board_access_structs.h"
 
-
+#ifndef DM35418_RESET_DELAY_MICRO_SEC
 #define DM35418_RESET_DELAY_MICRO_SEC	1000
+#endif
 
 DM35418LIB_API
 int DM35418_Gbc_Board_Reset(struct DM35418_Board_Descriptor *handle)

@@ -5,7 +5,7 @@
         Defines for the DM35418.  Values for the general board, not specific
         to a particular function block.
 
-    $Id: dm35418_types.h 138274 2023-07-06 20:25:13Z lfrankenfield $
+    $Id: dm35418_types.h 149930 2025-09-25 18:44:06Z bkorpacz $
 */
 
 //----------------------------------------------------------------------------
@@ -108,6 +108,12 @@
  *     Function Block Constant for 10 MHz ADC (1001)
  */
 #define DM35418_FUNC_BLOCK_ADC1001			0x1001
+
+/**
+ * @brief
+ *     Function Block Constant for SDM35541-based ADC (1002)
+ */
+#define DM35418_FUNC_BLOCK_ADC1002			0x1002
 
 /**
  * @brief

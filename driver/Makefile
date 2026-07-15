@@ -16,8 +16,8 @@
 #	Embedded Technologies, Inc.
 #
 
+MY_CFLAGS = -I$(shell pwd)/../include -g 
 
-MY_CFLAGS := -I$(shell pwd)/../include -g
 
 #
 # Kernel build environment directory.  Supposedly it is safer to use this
@@ -27,10 +27,19 @@ MY_CFLAGS := -I$(shell pwd)/../include -g
 KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 
 KERNEL_VER := $(shell uname -r | cut -c1-3)
-ifeq (4.0, $(firstword $(sort $(KERNEL_VER) 4.0)))
+
+ifeq (4.0, $(firstword $(shell printf '%s\n' $(KERNEL_VER) 4.0 | sort -V)))
 SUBDIRS_OR_M := M
 else
 SUBDIRS_OR_M := SUBDIRS
+endif
+
+
+# C FLAGS
+ifeq (6.0, $(firstword $(shell printf '%s\n' $(KERNEL_VER) 6.0 | sort -V)))
+EFLAGS = ccflags-y="$(MY_CFLAGS)"
+else
+EFLAGS = EXTRA_CFLAGS="$(MY_CFLAGS)"
 endif
 
 
@@ -46,30 +55,29 @@ FILES_TO_CLEAN= \
 	rtd-dm35418.mod.c \
 	rtd-dm35418.mod \
 	.*.d \
+	.*.o \
 	*.symvers \
 	*.order \
     *.markers \
 	*~
 
+.PHONY: debug debug_int debug_dma debug_all driver
+
 driver:		rtd-dm35418.c
-	make -C $(KERNEL_DIR) $(SUBDIRS_OR_M)=`pwd` EXTRA_CFLAGS="$(MY_CFLAGS)" modules
+	
+	make -C $(KERNEL_DIR) $(SUBDIRS_OR_M)=`pwd` $(EFLAGS) modules
+	
+debug: MY_CFLAGS += -DDEBUG
+debug: driver
 
-.PHONY: debug
-debug:
-	make -C $(KERNEL_DIR) $(SUBDIRS_OR_M)=`pwd` EXTRA_CFLAGS="$(MY_CFLAGS) -DDEBUG" modules
+debug_int: MY_CFLAGS += -DDEBUG_INT
+debug_int: driver
 
-.PHONY: debug_int
-debug_int:
-	make -C $(KERNEL_DIR) $(SUBDIRS_OR_M)=`pwd` EXTRA_CFLAGS="$(MY_CFLAGS) -DDEBUG_INT" modules
+debug_dma: MY_CFLAGS += -DDEBUG_DMA
+debug_dma: driver
 
-.PHONY: debug_dma
-debug_dma:
-	make -C $(KERNEL_DIR) $(SUBDIRS_OR_M)=`pwd` EXTRA_CFLAGS="$(MY_CFLAGS) -DDEBUG_DMA" modules
-
-.PHONY: debug_all
-debug_all:
-	make -C $(KERNEL_DIR) $(SUBDIRS_OR_M)=`pwd` EXTRA_CFLAGS="$(MY_CFLAGS) -DDEBUG_ALL" modules
-
+debug_all: MY_CFLAGS += -DDEBUG_ALL
+debug_all: driver
 
 clean:
 	rm -rf $(FILES_TO_CLEAN)

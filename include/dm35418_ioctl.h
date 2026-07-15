@@ -5,7 +5,7 @@
 		DM35418 Low level ioctl() request descriptor structure
 		 and request code definitions
 
-	$Id: dm35418_ioctl.h 80523 2014-07-17 18:38:59Z rgroner $
+	$Id: dm35418_ioctl.h 150217 2025-10-13 15:58:41Z bkorpacz $
 */
 
 //----------------------------------------------------------------------------
@@ -119,6 +119,16 @@ Macros
 	DM35418_IOCTL_MAGIC, \
 	(DM35418_IOCTL_REQUEST_BASE + 6), \
 	union dm35418_ioctl_argument)
+
+/**
+ * @brief
+ *    ioctl() request code to retrieve PCIe device ID
+ */
+#define DM35418_IOCTL_GET_DEVICE_ID \
+	_IOR( \
+	DM35418_IOCTL_MAGIC, \
+	(DM35418_IOCTL_REQUEST_BASE + 7), \
+	uint16_t)
 
 /**
  * @} DM35418_Ioctl_Macros

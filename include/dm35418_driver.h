@@ -5,7 +5,7 @@
         Structures and defines for the DM35418 driver module.
 
 
-    $Id: dm35418_driver.h 141380 2024-02-29 20:50:59Z lfrankenfield $
+    $Id: dm35418_driver.h 150218 2025-10-13 15:58:55Z bkorpacz $
 */
 
 //----------------------------------------------------------------------------
@@ -318,13 +318,15 @@ struct dm35418_device_descriptor {
 
 	unsigned int int_queue_out_marker;
 
-
 	/**
 	 * A list of all allocated DMA buffers
 	 */
 	struct list_head dma_descr_list;
 
-
+	/**
+	 * 16-bit PCIe device ID
+	 */
+	unsigned int device_id;
 };
 
 /**

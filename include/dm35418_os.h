@@ -4,7 +4,7 @@
     @brief
         Function declarations for the DM35418 that are Linux specific.
 
-    $Id: dm35418_os.h 109114 2017-06-09 07:13:20Z prucz $
+    $Id: dm35418_os.h 154351 2026-05-14 12:16:17Z asutton $
 */
 
 //----------------------------------------------------------------------------
@@ -57,12 +57,13 @@ struct DM35418_Board_Descriptor {
 	/**
 	 * Function pointer to the user ISR callback function.
 	 */
-	void (*isr) ();
+	void (*isr) (struct dm35418_ioctl_interrupt_info_request info_req);
 
 	/**
 	 * Process ID of the child process which will monitor DMA done interrupts.
 	 */
 	pthread_t pid;
+
 };
 
 

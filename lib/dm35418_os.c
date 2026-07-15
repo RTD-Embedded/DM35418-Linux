@@ -4,7 +4,7 @@
 	@brief
 		DM35418 Board Access library source code
 
-	$Id: dm35418_os.c 139459 2023-09-20 18:22:42Z lfrankenfield $
+	$Id: dm35418_os.c 150826 2025-11-17 19:05:33Z bkorpacz $
 */
 
 //----------------------------------------------------------------------------
@@ -307,7 +307,7 @@ void *DM35418_General_WaitForInterrupt(void *ptr)
 			break;
 		}
 		/*
-		 * An exception occured, this means that no IRQ line was allocated to
+		 * An exception occurred, this means that no IRQ line was allocated to
 		 * the device when the driver was loaded.
 		 */
 
@@ -321,7 +321,7 @@ void *DM35418_General_WaitForInterrupt(void *ptr)
 
 		/*
 		 * At least one file descriptor has data available and no exception
-		 * occured.  Check the device file descriptor to see if it is readable.
+		 * occurred.  Check the device file descriptor to see if it is readable.
 		 */
 
 		if (!FD_ISSET(handle->file_descriptor, &read_fds)) {
