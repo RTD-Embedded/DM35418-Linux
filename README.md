@@ -186,7 +186,9 @@ is produced by the DAC for sampling.
             
 Setup:
 DIO 0.0 (CN3 Pin 1) to Sync0+ (CN5 Pin 1) with a 100 Ohm resistor
+
 DIO 0.1 (CN3 Pin 2) to Sync0- (CN5 Pin 2) with a 100 Ohm resistor
+
 DAC 0.0 (CN4 Pin 33) to ADC0.0 (CN4 Pin 1), or signal of interest
                
 Usage: Display the command syntax by executing:
