@@ -32,7 +32,7 @@ license terms listed above.
 ## Supported Hardware
 
 
-This software supports the RTD [DM35418].
+This software supports the RTD DM35418 (legacy) and [DM35419](https://www.rtd.com/PC104/DM/analog%20IO/DM35x19.htm).
 
 
 ## Supported Kernel Versions
@@ -66,7 +66,6 @@ compiler, though porting to other compilers such as LLVM is possible.
 
 The directory `driver/` contains source code related to the driver.
 
-
 In order to use a driver, one must first compile it, load it into the kernel,
 and create device files for the board(s).  To do this, issue the following
 commands while sitting in the `driver/` directory:
@@ -74,33 +73,20 @@ commands while sitting in the `driver/` directory:
 * `make`
 * `sudo make load`
 
-
-
 The driver module must be loaded before running any program which accesses a
 DM35418 device.
 
-
-
 ## Library Interface
 
-The directory `lib/` contains source code related to the user library.
-
-
+The directory `lib/` contains source code related to the user library. 
 The DM35418 library is created with a file name of librtd-dm35418.a and is
 statically linked.
-
 
 Please refer to the software manual for details on using the user level library
 functions.  These functions are prototyped in the file `include/dm35418_library.h`;
 this header file must be included in any code which wishes to call library
-functions.
-
-
-The library must be built before compiling the example programs or your
-application.
-
-
-To build the library, issue the command `make` within `lib/`.
+functions. The library must be built before compiling the example programs or your
+application. To build the library, issue the command `make` within `lib/`.
 
 
 ## Header Files
